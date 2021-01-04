@@ -22,7 +22,9 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "winston": "^3.3.3"
+  },
   "scripts": {
     "lint": "eslint ."
   }
