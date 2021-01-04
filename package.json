@@ -1,0 +1,17 @@
+{
+  "name": "keep-sfw-bot",
+  "version": "1.0.0",
+  "description": "a telegram bot to keep your group suitable for work",
+  "main": "index.js",
+  "repository": "https://github.com/nacht42/keep-sfw-bot",
+  "author": "Nacht <nacht42@riseup.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "cz-conventional-changelog": "3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
