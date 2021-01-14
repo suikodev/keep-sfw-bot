@@ -11,8 +11,11 @@
       "skipLibCheck": true,
       "baseUrl": ".",
       "paths": {
-        "~/*": ["./src/*"]
-      },
+          "*": [
+              "node_modules/*",
+              "src/types/*"
+          ]
+      }
   },
   "include": [
       "src/**/*"
