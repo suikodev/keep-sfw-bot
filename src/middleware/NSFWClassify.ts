@@ -9,12 +9,13 @@ let model: NSFWJS;
   model = await loadNSFWModel("file://model/", { size: 299 });
 })();
 
-const NSFWClassify: Middleware<SFWContext> = async (ctx) => {
+const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
   const resp = await fetch(ctx.fileLink);
   const imageBuffer = await resp.buffer();
   const image = tfNode.decodeImage(imageBuffer, 3) as Tensor3D;
   const predictions = await model.classify(image);
   ctx.predictions = predictions;
+  next();
   image.dispose();
 };
 
