@@ -3,7 +3,7 @@ import { predictionType } from "nsfwjs";
 
 interface SFWContext extends Context {
   fileLink: string | URL;
-  prediction: predictionType;
+  predictions: predictionType[];
 }
 
 export default SFWContext;
