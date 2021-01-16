@@ -13,5 +13,6 @@ if (process.env.NODE_ENV !== "production") {
 
 bot.use(middleware.storeFileId);
 bot.use(middleware.NSFWClassify);
+bot.use(middleware.NSFWUpdateHandler);
 
 bot.launch().then(() => logger.debug("bot launched successfully"));
