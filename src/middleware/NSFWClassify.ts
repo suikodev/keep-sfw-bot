@@ -12,14 +12,18 @@ let model: NSFWJS;
 })();
 
 const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
-  const resp = await fetch(ctx.fileLink);
-  let imageBuffer = await resp.buffer();
-  imageBuffer = await sharp(imageBuffer).jpeg().toBuffer();
-  const image = tf.node.decodeImage(imageBuffer, 3) as tf.Tensor3D;
-  const predictions = await model.classify(image);
-  ctx.predictions = predictions;
+  if (ctx.fileId) {
+    const fileLink = await ctx.telegram.getFileLink(ctx.fileId);
+    const resp = await fetch(fileLink);
+    let imageBuffer = await resp.buffer();
+    imageBuffer = await sharp(imageBuffer).jpeg().toBuffer();
+    const image = tf.node.decodeImage(imageBuffer, 3) as tf.Tensor3D;
+    const predictions = await model.classify(image);
+    ctx.predictions = predictions;
+    image.dispose();
+  }
+
   next();
-  image.dispose();
 };
 
 export default NSFWClassify;

@@ -1,9 +1,9 @@
 import messageLogger from "./messageLogger";
-import storeFileLink from "./storeFileLink";
+import storeFileId from "./storeFileId";
 
 const middleware = {
   messageLogger,
-  storeFileLink,
+  storeFileLink: storeFileId,
 };
 
 export default middleware;
