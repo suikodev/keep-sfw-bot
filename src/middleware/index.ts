@@ -1,9 +1,11 @@
 import messageLogger from "./messageLogger";
 import storeFileId from "./storeFileId";
+import NSFWClassify from "./NSFWClassify";
 
 const middleware = {
   messageLogger,
-  storeFileLink: storeFileId,
+  storeFileId,
+  NSFWClassify,
 };
 
 export default middleware;
