@@ -3,6 +3,7 @@ import { Middleware } from "telegraf";
 import { load as loadNSFWModel, NSFWJS } from "nsfwjs";
 import { node as tfNode, Tensor3D } from "@tensorflow/tfjs-node";
 import fetch from "node-fetch";
+import sharp from "sharp";
 
 let model: NSFWJS;
 (async () => {
@@ -11,7 +12,8 @@ let model: NSFWJS;
 
 const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
   const resp = await fetch(ctx.fileLink);
-  const imageBuffer = await resp.buffer();
+  let imageBuffer = await resp.buffer();
+  imageBuffer = await sharp(imageBuffer).jpeg().toBuffer();
   const image = tfNode.decodeImage(imageBuffer, 3) as Tensor3D;
   const predictions = await model.classify(image);
   ctx.predictions = predictions;
