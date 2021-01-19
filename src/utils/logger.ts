@@ -7,8 +7,8 @@ export const logger = winston.createLogger({
       format: format.combine(format.timestamp(), format.prettyPrint()),
     }),
     new winston.transports.File({
-      filename: "debug.log",
-      level: "debug",
+      filename: "./logs/debug.log",
+      level: "./logs/debug",
       format: format.combine(format.timestamp(), format.json()),
     }),
   ],
