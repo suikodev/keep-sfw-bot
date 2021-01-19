@@ -1,0 +1,34 @@
+name: lint, build, test
+
+on: [push, pull_request]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: lint code base
+        uses: github/super-linter@v3
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: yarn install
+        run: |
+          yarn install --frozen-lockfile --network-timeout 300000
+      - name: build and test
+        run: |
+          yarn build
+          yarn test
