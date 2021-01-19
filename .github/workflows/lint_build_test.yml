@@ -3,7 +3,7 @@ name: lint, build and test
 on: [push, pull_request]
 
 jobs:
-  release:
+  lintBuildTest:
     runs-on: ubuntu-latest
 
     strategy:
