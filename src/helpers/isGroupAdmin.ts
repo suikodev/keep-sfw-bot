@@ -7,8 +7,9 @@ async function isGroupAdmin(
   let admins;
   if (chatId === undefined) {
     admins = await ctx.getChatAdministrators();
+  } else {
+    admins = await ctx.telegram.getChatAdministrators(chatId);
   }
-  admins = await ctx.telegram.getChatAdministrators(chatId);
   return admins.some((admin) => admin.user.id === ctx.from.id);
 }
 
