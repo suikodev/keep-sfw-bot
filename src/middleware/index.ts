@@ -1,11 +1,11 @@
 import messageLogger from "./messageLogger";
-import storeFileId from "./storeFileId";
+import storeFileIdForClassification from "./storeFileIdForClassification";
 import NSFWClassify from "./NSFWClassify";
 import NSFWUpdateHandler from "./NSFWUpdateHandler";
 
 const middleware = {
   messageLogger,
-  storeFileId,
+  storeFileIdForClassification,
   NSFWClassify,
   NSFWUpdateHandler,
 };

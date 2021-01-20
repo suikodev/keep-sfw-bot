@@ -1,7 +1,10 @@
 import { Middleware } from "telegraf";
 import SFWContext from "../context";
 
-const storeFileId: Middleware<SFWContext> = async (ctx, next) => {
+const storeFileIdForClassification: Middleware<SFWContext> = async (
+  ctx,
+  next
+) => {
   let fileId;
   if ("photo" in ctx.message) fileId = ctx.message.photo[0].file_id;
   if ("video" in ctx.message) fileId = ctx.message.video.file_id;
@@ -16,4 +19,4 @@ const storeFileId: Middleware<SFWContext> = async (ctx, next) => {
   next();
 };
 
-export default storeFileId;
+export default storeFileIdForClassification;

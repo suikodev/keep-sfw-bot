@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== "production") {
   bot.use(middleware.messageLogger);
 }
 
-bot.use(middleware.storeFileId);
+bot.use(middleware.storeFileIdForClassification);
 bot.use(middleware.NSFWClassify);
 bot.use(middleware.NSFWUpdateHandler);
 
