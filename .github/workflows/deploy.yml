@@ -1,0 +1,24 @@
+name: deploy
+
+on:
+  workflow_run:
+    workflows: ["publish"]
+    types: 
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd ./keep-sfw-bot
+            docker pull ghcr.io/nacht42/keep-sfw-bot:latest
+            docker rm keep-sfw-bot -f
+            docker run -d --restart always --name keep-sfw-bot --env-file .env --env NODE_ENV=production ghcr.io/nacht42/keep-sfw-bot:latest
+            docker inspect keep-sfw-bot --format='{{.State.ExitCode}}' | xargs test 0 -eq
