@@ -8,7 +8,7 @@ on:
       - "*"
 
 env:
-  IMAGE_NAME: keep-sfw-bot
+  IMAGE_NAME: ${{ github.event.repository.name }}
 
 jobs:
   publish:
