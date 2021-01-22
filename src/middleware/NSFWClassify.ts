@@ -4,6 +4,7 @@ import { load as loadNSFWModel, NSFWJS } from "nsfwjs";
 import * as tf from "@tensorflow/tfjs-node";
 import fetch from "node-fetch";
 import sharp from "sharp";
+import { getImageOrVideoFileInfo } from "../helpers";
 
 let model: NSFWJS;
 (async () => {
@@ -12,8 +13,9 @@ let model: NSFWJS;
 })();
 
 const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
-  if (ctx.fileId) {
-    const fileLink = await ctx.telegram.getFileLink(ctx.fileId);
+  const fileInfo = getImageOrVideoFileInfo(ctx);
+  if (fileInfo?.fileType === "image") {
+    const fileLink = await ctx.telegram.getFileLink(fileInfo.fileId);
     const resp = await fetch(fileLink);
     let imageBuffer = await resp.buffer();
     imageBuffer = await sharp(imageBuffer).jpeg().toBuffer();
@@ -22,6 +24,8 @@ const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
     ctx.predictions = predictions;
     image.dispose();
   }
+
+  // if (fileInfo?.fileType === "video")
 
   next();
 };
