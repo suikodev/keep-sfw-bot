@@ -7,6 +7,7 @@
   "author": "Nacht <nacht42@riseup.net>",
   "license": "MIT",
   "devDependencies": {
+    "@prisma/cli": "^2.15.0",
     "@types/concurrently": "^5.2.1",
     "@types/node": "^14.14.19",
     "@types/node-fetch": "^2.5.8",
@@ -30,6 +31,7 @@
     }
   },
   "dependencies": {
+    "@prisma/client": "^2.15.0",
     "@tensorflow/tfjs-node": "^2.8.3",
     "dotenv": "^8.2.0",
     "node-fetch": "^2.6.1",
@@ -47,5 +49,8 @@
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
     "test": "jest --passWithNoTests",
     "start": "node dist/index.js"
+  },
+  "prisma": {
+    "schema": "src/db/schema.prisma"
   }
 }
