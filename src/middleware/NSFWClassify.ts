@@ -25,6 +25,7 @@ const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
     image.dispose();
   }
 
+  // TODO: deal with video file
   // if (fileInfo?.fileType === "video")
 
   next();
