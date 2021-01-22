@@ -2,7 +2,9 @@ import SFWContext from "../context";
 import { Middleware } from "telegraf";
 
 const NSFWUpdateHandler: Middleware<SFWContext> = (ctx, next) => {
-  const maxProbabilityClass = ctx.predictions[0]?.className;
+  const maxProbabilityClass = ctx.predictions.sort(
+    (a, b) => b.probability - a.probability
+  )[0].className;
   if (
     maxProbabilityClass === "Porn" ||
     maxProbabilityClass === "Hentai" ||
