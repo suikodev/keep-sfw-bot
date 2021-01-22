@@ -1,7 +1,2 @@
-import isGroupAdmin from "./isGroupAdmin";
-
-const helpers = {
-  isGroupAdmin,
-};
-
-export default helpers;
+export { isGroupAdmin } from "./isGroupAdmin";
+export { getImageOrVideoFileInfo } from "./getImageOrVideoFileInfo";

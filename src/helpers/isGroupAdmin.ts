@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
-async function isGroupAdmin(ctx: Context): Promise<boolean>;
-async function isGroupAdmin(
+export async function isGroupAdmin(ctx: Context): Promise<boolean>;
+export async function isGroupAdmin(
   ctx: Context,
   chatId?: string | number
 ): Promise<boolean> {
@@ -12,5 +12,3 @@ async function isGroupAdmin(
   }
   return admins.some((admin) => admin.user.id === ctx.from.id);
 }
-
-export default isGroupAdmin;
