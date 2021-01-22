@@ -12,8 +12,8 @@ function getFileInfoWithFileType<
   return { fileId: file.file_id, fileUniqueId: file.file_unique_id, fileType };
 }
 
-export const getImageOrVideoFileInfo = (ctx: Context): FileInfo => {
-  let fileInfo: FileInfo;
+export const getImageOrVideoFileInfo = (ctx: Context): FileInfo | undefined => {
+  let fileInfo: FileInfo | undefined;
   if ("photo" in ctx.message) {
     const file = ctx.message.photo[0];
     fileInfo = getFileInfoWithFileType(file, "image");
