@@ -42,7 +42,7 @@
   },
   "scripts": {
     "build-ts": "tsc",
-    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+    "lint": "eslint \"**/*.{js,ts}\" --fix",
     "build": "yarn build-ts && yarn lint",
     "migrate": "prisma migrate dev --preview-feature",
     "watch-ts": "tsc -w",
