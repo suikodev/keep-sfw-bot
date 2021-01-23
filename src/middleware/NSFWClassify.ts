@@ -1,6 +1,6 @@
 import SFWContext from "../context";
 import { Middleware } from "telegraf";
-import { load as loadNSFWModel, NSFWJS, predictionType } from "nsfwjs";
+import { load as loadNSFWModel, NSFWJS } from "nsfwjs";
 import * as tf from "@tensorflow/tfjs-node";
 import fetch from "node-fetch";
 import sharp from "sharp";
