@@ -6,6 +6,7 @@ import fetch from "node-fetch";
 import sharp from "sharp";
 import { getImageOrVideoFileInfo } from "../helpers";
 import PrismaClient from "../db/client";
+import { PredictionsClassName, PredictionsMap } from "../types";
 
 let model: NSFWJS;
 (async () => {
@@ -24,13 +25,13 @@ const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
     },
   });
   if (result) {
-    ctx.predictions = [
-      { className: "Porn", probability: result.porn },
-      { className: "Sexy", probability: result.sexy },
-      { className: "Hentai", probability: result.hentai },
-      { className: "Drawing", probability: result.drawing },
-      { className: "Neutral", probability: result.neutral },
-    ];
+    const predictionsMap: PredictionsMap = new Map();
+    predictionsMap.set("Drawing", result.drawing);
+    predictionsMap.set("Hentai", result.hentai);
+    predictionsMap.set("Neutral", result.neutral);
+    predictionsMap.set("Porn", result.porn);
+    predictionsMap.set("Sexy", result.sexy);
+    ctx.predictionsMap = predictionsMap;
     return next();
   }
 
@@ -39,28 +40,30 @@ const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
     const resp = await fetch(fileLink);
     let imageBuffer = await resp.buffer();
     imageBuffer = await sharp(imageBuffer).jpeg().toBuffer();
+
     const image = tf.node.decodeImage(imageBuffer, 3) as tf.Tensor3D;
     const predictions = await model.classify(image);
-    ctx.predictions = predictions;
+
+    const predictionsMap: PredictionsMap = new Map();
+    for (const prediction of predictions) {
+      predictionsMap.set(
+        // TODO: remove as after updated nsfwjs version
+        prediction.className as PredictionsClassName,
+        prediction.probability
+      );
+    }
+    ctx.predictionsMap = predictionsMap;
+
     image.dispose();
+
     await prisma.nsfwFile.create({
       data: {
         fileUniqueId: fileInfo.fileUniqueId,
-        porn: ctx.predictions.find(
-          (prediction) => prediction.className === "Porn"
-        ).probability,
-        sexy: ctx.predictions.find(
-          (prediction) => prediction.className === "Sexy"
-        ).probability,
-        hentai: ctx.predictions.find(
-          (prediction) => prediction.className === "Hentai"
-        ).probability,
-        drawing: ctx.predictions.find(
-          (prediction) => prediction.className === "Drawing"
-        ).probability,
-        neutral: ctx.predictions.find(
-          (prediction) => prediction.className === "Neutral"
-        ).probability,
+        drawing: predictionsMap.get("Drawing"),
+        hentai: predictionsMap.get("Hentai"),
+        neutral: predictionsMap.get("Neutral"),
+        porn: predictionsMap.get("Porn"),
+        sexy: predictionsMap.get("Sexy"),
       },
     });
     return next();

@@ -1,8 +1,8 @@
 import { Context } from "telegraf";
-import { predictionType } from "nsfwjs";
+import { PredictionsMap } from "./types";
 
 interface SFWContext extends Context {
-  predictions: predictionType[];
+  predictionsMap: PredictionsMap;
 }
 
 export default SFWContext;
