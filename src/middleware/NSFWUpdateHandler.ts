@@ -3,6 +3,8 @@ import { Middleware } from "telegraf";
 import { PredictionsClassName } from "../types";
 
 const NSFWUpdateHandler: Middleware<SFWContext> = (ctx, next) => {
+  if (!ctx.predictionsMap) return next();
+
   // find max probability class
   const predictionsMapIter = ctx.predictionsMap.entries();
   let [className, maxProbability]: [
@@ -27,8 +29,6 @@ Max probability: ${className} ${maxProbabilityPercent}%`,
       { reply_to_message_id: ctx.message.message_id }
     );
   }
-
-  next();
 };
 
 export default NSFWUpdateHandler;
