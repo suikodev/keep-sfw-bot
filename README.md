@@ -1,2 +1,2 @@
-# keep-sfw-bot
+# [keep-sfw-bot](https://t.me/keep_sfw_bot) &middot; [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/nacht42/keep-sfw-bot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/nacht42/keep-sfw-bot/context:javascript) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nacht42/keep-sfw-bot/blob/main/LICENSE)
 a telegram bot for keeping your group suitable for work.
