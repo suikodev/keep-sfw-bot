@@ -5,8 +5,8 @@ import * as tf from "@tensorflow/tfjs-node";
 import fetch from "node-fetch";
 import sharp from "sharp";
 import { getImageOrVideoFileInfo } from "../helpers";
-import PrismaClient from "../db/client";
 import { PredictionsClassName, PredictionsMap } from "../types";
+import { ClassifiedFile } from "../entities/ClassifiedFile";
 
 let model: NSFWJS;
 (async () => {
@@ -17,20 +17,17 @@ let model: NSFWJS;
 const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
   const fileInfo = getImageOrVideoFileInfo(ctx);
   if (!fileInfo) return next();
-
-  const prisma = PrismaClient.getInstance().prisma;
-  const result = await prisma.nsfwFile.findFirst({
-    where: {
-      fileUniqueId: fileInfo.fileUniqueId,
-    },
+  const file = await ClassifiedFile.findOne({
+    fileUniqueId: fileInfo.fileUniqueId,
   });
-  if (result) {
+
+  if (file) {
     const predictionsMap: PredictionsMap = new Map();
-    predictionsMap.set("Drawing", result.drawing);
-    predictionsMap.set("Hentai", result.hentai);
-    predictionsMap.set("Neutral", result.neutral);
-    predictionsMap.set("Porn", result.porn);
-    predictionsMap.set("Sexy", result.sexy);
+    predictionsMap.set("Drawing", file.drawing);
+    predictionsMap.set("Hentai", file.hentai);
+    predictionsMap.set("Neutral", file.neutral);
+    predictionsMap.set("Porn", file.porn);
+    predictionsMap.set("Sexy", file.sexy);
     ctx.predictionsMap = predictionsMap;
     return next();
   }
@@ -56,16 +53,14 @@ const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
 
     image.dispose();
 
-    await prisma.nsfwFile.create({
-      data: {
-        fileUniqueId: fileInfo.fileUniqueId,
-        drawing: predictionsMap.get("Drawing"),
-        hentai: predictionsMap.get("Hentai"),
-        neutral: predictionsMap.get("Neutral"),
-        porn: predictionsMap.get("Porn"),
-        sexy: predictionsMap.get("Sexy"),
-      },
-    });
+    const file = new ClassifiedFile();
+    file.fileUniqueId = fileInfo.fileUniqueId;
+    file.hentai = predictionsMap.get("Hentai");
+    file.drawing = predictionsMap.get("Drawing");
+    file.sexy = predictionsMap.get("Sexy");
+    file.porn = predictionsMap.get("Porn");
+    file.neutral = predictionsMap.get("Neutral");
+    await file.save();
     return next();
   }
 

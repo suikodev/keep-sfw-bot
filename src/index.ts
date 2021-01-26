@@ -1,9 +1,13 @@
+import "reflect-metadata";
 import "./utils/secrets";
 import { logger } from "./utils/logger";
 import { Telegraf } from "telegraf";
 
 import middleware from "./middleware";
 import SFWContext from "./context";
+import { createConnection } from "typeorm";
+
+createConnection();
 
 const bot = new Telegraf<SFWContext>(process.env.BOT_TOKEN);
 
