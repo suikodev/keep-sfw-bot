@@ -9,7 +9,6 @@ COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
 RUN npm rebuild @tensorflow/tfjs-node build-addon-from-source
 COPY . .
-RUN npx prisma migrate dev --preview-feature
 RUN yarn build
 RUN npm prune --production
 RUN /usr/local/bin/node-prune
@@ -22,7 +21,7 @@ RUN apt-get -qy install openssl
 WORKDIR /usr/src/app
 
 COPY --from=BUILD_IMAGE /usr/src/app/dist ./dist
-COPY --from=BUILD_IMAGE /usr/src/app/dev.db ./dev.db
+COPY --from=BUILD_IMAGE /usr/src/app/ormconfig.js ./ormconfig.js
 COPY --from=BUILD_IMAGE /usr/src/app/model ./model
 COPY --from=BUILD_IMAGE /usr/src/app/node_modules ./node_modules
 
