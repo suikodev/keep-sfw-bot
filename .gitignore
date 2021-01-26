@@ -104,4 +104,6 @@ dist
 .tern-port
 
 # sqilte
-dev.db
+bot.db
+bot.db-shm
+bot.db-wal
