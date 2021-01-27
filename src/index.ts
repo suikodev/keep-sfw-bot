@@ -5,18 +5,27 @@ import {
   BOT_WEBHOOK_PORT,
   BOT_TOKEN,
 } from "./utils/secrets";
-import { logger } from "./utils/logger";
+
 import { Telegraf } from "telegraf";
 
+import { logger } from "./utils/logger";
 import middleware from "./middleware";
 import SFWContext from "./context";
+import { createDBConnection } from "./utils/createDBConnection";
 
 const bot = new Telegraf<SFWContext>(BOT_TOKEN);
+
+createDBConnection()
+  .then(() => {
+    logger.debug(`database connected`);
+  })
+  .catch((err) => {
+    logger.error("CANNOT connect database:", err);
+  });
 
 if (ENVIRONMENT !== "production") {
   bot.use(middleware.messageLogger);
 }
-
 bot.use(middleware.NSFWClassify);
 bot.use(middleware.NSFWUpdateHandler);
 
