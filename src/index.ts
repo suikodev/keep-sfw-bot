@@ -9,10 +9,10 @@ import {
 import { Telegraf } from "telegraf";
 
 import { logger } from "./utils/logger";
-import middleware from "./middleware";
+import * as middleware from "./middleware";
 import SFWContext from "./context";
 import { createDBConnection } from "./utils/createDBConnection";
-import startCommand from "./commands/startCommand";
+import * as commands from "./commands";
 
 const bot = new Telegraf<SFWContext>(BOT_TOKEN);
 
@@ -30,7 +30,7 @@ if (ENVIRONMENT !== "production") {
 bot.use(middleware.NSFWClassify);
 bot.use(middleware.NSFWUpdateHandler);
 
-bot.command("start", startCommand);
+bot.command("start", commands.start);
 
 if (ENVIRONMENT === "production" && BOT_WEBHOOK_DOMAIN) {
   bot

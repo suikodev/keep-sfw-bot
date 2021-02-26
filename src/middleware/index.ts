@@ -1,11 +1,3 @@
-import messageLogger from "./messageLogger";
-import NSFWClassify from "./NSFWClassify";
-import NSFWUpdateHandler from "./NSFWUpdateHandler";
-
-const middleware = {
-  messageLogger,
-  NSFWClassify,
-  NSFWUpdateHandler,
-};
-
-export default middleware;
+export { messageLogger } from "./messageLogger";
+export { NSFWClassify } from "./NSFWClassify";
+export { NSFWUpdateHandler } from "./NSFWUpdateHandler";

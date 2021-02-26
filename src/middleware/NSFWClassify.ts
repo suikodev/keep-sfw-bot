@@ -14,13 +14,13 @@ let model: NSFWJS;
   model = await loadNSFWModel("file://model/", { size: 299 });
 })();
 
-const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
+export const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
   const fileInfo = getImageOrVideoFileInfo(ctx);
   if (!fileInfo) return next();
+
   const file = await ClassifiedFile.findOne({
     fileUniqueId: fileInfo.fileUniqueId,
   });
-
   if (file) {
     const predictionsMap: PredictionsMap = new Map();
     predictionsMap.set("Drawing", file.drawing);
@@ -67,5 +67,3 @@ const NSFWClassify: Middleware<SFWContext> = async (ctx, next) => {
   // TODO: deal with video file
   // if (fileInfo?.fileType === "video")
 };
-
-export default NSFWClassify;

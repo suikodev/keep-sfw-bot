@@ -2,7 +2,7 @@ import SFWContext from "../context";
 import { Middleware } from "telegraf";
 import { PredictionsClassName } from "../types";
 
-const NSFWUpdateHandler: Middleware<SFWContext> = (ctx, next) => {
+export const NSFWUpdateHandler: Middleware<SFWContext> = (ctx, next) => {
   if (!ctx.predictionsMap) return next();
 
   // find max probability class
@@ -30,5 +30,3 @@ Max probability: ${className} ${maxProbabilityPercent}%`,
     );
   }
 };
-
-export default NSFWUpdateHandler;
