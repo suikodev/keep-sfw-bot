@@ -14,6 +14,7 @@ function getFileInfoWithFileType<
 
 export const getImageOrVideoFileInfo = (ctx: Context): FileInfo | undefined => {
   let fileInfo: FileInfo | undefined;
+  if (!ctx.message) return undefined;
   if ("photo" in ctx.message) {
     const file = ctx.message.photo[0];
     fileInfo = getFileInfoWithFileType(file, "image");
