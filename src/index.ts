@@ -29,8 +29,10 @@ if (ENVIRONMENT !== "production") {
 }
 bot.use(middleware.NSFWClassify);
 bot.use(middleware.NSFWUpdateHandler);
+bot.use(middleware.configMenu);
 
 bot.command("start", commands.start);
+bot.command("config", commands.config);
 
 if (ENVIRONMENT === "production" && BOT_WEBHOOK_DOMAIN) {
   bot
