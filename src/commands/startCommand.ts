@@ -6,5 +6,5 @@ export const start: Middleware<Context> = async (ctx) => {
 
 you can use me to filter NSFW image\\(may have ability to filter video in next version:P\\) in group\\.  
 
-click /config or send 'config' command to configure bot for your group`);
+click /config or send 'config' command to configure bot for your group if you are bot administrator.`);
 };
